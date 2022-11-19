@@ -1,4 +1,12 @@
-# Tech Stack
-expressjs
+# About this Project
+# Frameworks - Libraries
+Below are some major libs being used.  
+expressjs  
+mongodb  
+mongoose  
+axios
 
-Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+# Mongoose
+is being used to interact with mongodb server
+
+More....
