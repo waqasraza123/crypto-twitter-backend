@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 //create user schema
-const userSchema = mongoose.Schema({
+const users = mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -32,4 +32,4 @@ const userSchema = mongoose.Schema({
  * first argument : name of the model
  * second argument : schema object
  */
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', users);

@@ -1,22 +1,32 @@
 require("dotenv").config()
 require("./config/database")
-require("./models/UserModel")
+require("./models/user")
 
 const express = require('express')
 const app = express()
 const axios = require('axios')
 const cors = require('cors')
+const usersRouter = require('./routes/users');
 
 const port = 8000
-const apiBaseURL = "https://pro-api.coinmarketcap.com";
+const apiBaseURL = process.env.COINMARKETCAP_API_URL;
 const APIKEY = process.env.COINMARKETCAP_API;
 
-/**
- * cors settings to allow the origins
+/****************
+ * Middlewares
+ *
+ * *************
  */
+//cors settings to allow the origins
 app.use(
     cors({origin: ['http://localhost:3000', 'http://127.0.0.1:3000']})
 );
+
+//express.json() is a built-in middleware function in Express starting from v4.16.0.
+//It parses incoming JSON requests and puts the parsed data in req.body.
+app.use(express.json());
+
+app.use("/users", usersRouter);
 
 /*******************
  * API Endpoints

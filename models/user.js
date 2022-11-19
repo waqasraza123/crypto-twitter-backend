@@ -1,4 +1,4 @@
-const userSchema = require('../schemas/UserSchema');
+const userSchema = require('../schemas/users');
 
 let user;
 let promise = new Promise(async function(resolve, reject){
