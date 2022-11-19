@@ -1,29 +1,35 @@
-const userSchema = require('../schemas/users');
+const mongoose = require("mongoose")
 
-let user;
-let promise = new Promise(async function(resolve, reject){
-
-    try{
-        user = await userSchema.create(
-            {
-                name: "Waqas 3",
-                email: "waqas@gmail.com",
-                password: "123456"
-            }
-        );
-    }catch (exception){
-        reject(exception); //reject the promise
+//create user schema
+const users = mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        lowercase: true
+    },
+    password: {
+        type: String,
+        required: true,
+        minLength: 6
+    },
+    createdAt: {
+        type: Date,
+        default: () => Date.now()
+    },
+    updatedAt: {
+        type: Date,
+        default: () => Date.now()
     }
-
-    //runs when the user is created
-    if(user){
-        resolve(user);//resolve the promise
-    }
-
 });
 
-//once the promise is returned
-promise.then(
-    result => {console.log(result)}, //result = user
-    error =>  {console.log(error)}   //error = exception
-);
+/**
+ *
+ * create user model - similar to eloquent models
+ * first argument : name of the model
+ * second argument : schema object
+ */
+module.exports = mongoose.model('User', users);

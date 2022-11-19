@@ -4,35 +4,116 @@ const User = require("../models/user");
 
 //all the routes are prefixed by /users
 
-//Get all users
+/**
+ * returns all users
+ * required : nothing
+ */
 router.get("/", async function (req, res){
     try {
         //wait for the results
         const users = await User.find();
         res.status(200).json(users);
     }
-    catch (exception){
+    catch (err){
         //handle errors here
+        //500 server error code
         res.status(500).json(
             {
-                message: exception.message
+                message: err.message
             }
         )
     }
 
 });
 
-//Get one user
-router.get("/:id", function (req, res){});
+/**
+ * returns one user
+ * required : email
+ */
+router.get("/user", async function (req, res){
+    const email = req.body.email;
 
-//Create one
-router.post("/", function (req, res){});
+    try{
+        const user = await User.find({email: email});
+        if(user){
+            res.status(200).json(user);
+        }
+    }catch(err){
+        res.status(500).json({message: err.message})
+    }
 
-//Update one user
-router.patch("/:id", function (req, res){});
+});
 
-//Delete one user
-router.delete("/:id", function (req, res){});
+/**
+ * creates one user
+ * required : all
+ */
+router.post("/", async function (req, res){
+
+    try {
+        const user = await User.create(
+            {
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            }
+        );
+
+        if(user){
+            res.status(201).json(user);
+        }
+
+    }catch (err){
+        res.status(500).json({message: err.message});
+    }
+
+});
+
+/**
+ * updates a user
+ * required : email and/or other data to update
+ */
+router.patch("/user", async function (req, res){
+
+    try{
+        const email = req.body.email;
+        const filter = {email: email};
+        const newData = req.body;
+
+        //new: true sends back the new data after update
+        let user = await User.findOneAndUpdate(filter, newData, {new: true});
+
+        if(user == null){
+            res.status(404).json({message: "User not found!"});
+        }
+        else{
+            //send back the updated user
+            res.json(user);
+        }
+
+    }catch (err){
+        res.status(500).json({message: err.message});
+    }
+
+});
+
+/**
+ * deletes a user
+ * required : email
+ */
+router.delete("/user", async function (req, res){
+
+    try{
+        const email = req.body.email;
+        await User.deleteOne({email});
+
+        res.json({message: `User ${email} is deleted.`});
+
+    }catch (err){
+        res.status(500).json(err.message);
+    }
+
+});
 
 
 module.exports = router;
