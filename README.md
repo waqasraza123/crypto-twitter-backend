@@ -4,7 +4,8 @@ Below are some major libs being used.
 expressjs  
 mongodb  
 mongoose  
-axios
+axios  
+jsonwebtoken
 
 # Mongoose
 is being used to interact with mongodb server
