@@ -9,6 +9,11 @@ axios
 # Mongoose
 is being used to interact with mongodb server
 
+# JWT Authentication
+/auth/login -> returns accessToken to be used  
+/auth/token -> accepts refreshToken and returns a new accessToken  
+/auth/logout -> deletes the refreshToken
+
 One of the goal is to turn it into a npm package  
 as a wrapper around coinmarketcap api. Generate methods  
 and functions for data fetching.
@@ -22,7 +27,7 @@ listOfAll(){
             {id: 2, symbol: ETH, name:ethereum, ...., }
         ]    
     }
-    return allCryptoCurrencies;
+    return allCryptoCurrencies;  
 }
 
 getCurrencyNews($currencyName){  
