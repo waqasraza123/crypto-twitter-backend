@@ -10,15 +10,16 @@ axios
 is being used to interact with mongodb server
 
 # JWT Authentication
-/auth/login -> returns accessToken to be used  
-/auth/token -> accepts refreshToken and returns a new accessToken  
-/auth/logout -> deletes the refreshToken
+`/auth/login` -> returns accessToken to be used  
+`/auth/token` -> accepts refreshToken and returns a new accessToken  
+`/auth/logout` -> deletes the refreshToken
 
 One of the goal is to turn it into a npm package  
 as a wrapper around coinmarketcap api. Generate methods  
 and functions for data fetching.
 
 So, instead of calling the coinmarketcap api directly,  
+```
 listOfAll(){
 
     const allCryptoCurrencies = {
@@ -29,14 +30,20 @@ listOfAll(){
     }
     return allCryptoCurrencies;  
 }
+```
 
+```
 getCurrencyNews($currencyName){  
+
     const news = {  
         [  
-            {title: "News Title", : description: ""....."}
+            {title: "News Title", : description: "bla bla ..."},
+            {title: "News Title 2", : description: "bla bla ..."}
         ]   
     }
+    
     return news;
 }
+```
 
 More....
