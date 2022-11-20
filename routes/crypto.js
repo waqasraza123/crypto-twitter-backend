@@ -2,7 +2,7 @@ const express = require("express")
 const axios = require("axios")
 const router = express.Router()
 
-const authMiddleware = require("../middlewares/authentication")
+const authMiddleware = require("../middlewares/jwtAuthentication")
 const apiBaseURL = process.env.COINMARKETCAP_API_URL;
 const APIKEY = process.env.COINMARKETCAP_API;
 

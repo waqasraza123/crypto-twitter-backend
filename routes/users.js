@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const User = require("../models/user");
-const authMiddleware = require("../middlewares/authentication")
+const authMiddleware = require("../middlewares/jwtAuthentication")
 
 //all the routes are prefixed by /users
 
