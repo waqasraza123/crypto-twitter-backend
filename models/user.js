@@ -23,6 +23,14 @@ const users = mongoose.Schema({
     updatedAt: {
         type: Date,
         default: () => Date.now()
+    },
+    accessToken: {
+        type: String,
+        required: true
+    },
+    refreshToken: {
+        type: String,
+        required: true
     }
 });
 
