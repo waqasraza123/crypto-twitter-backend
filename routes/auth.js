@@ -5,7 +5,6 @@ const express = require("express")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const User = require("../models/user");
-const {execMap} = require("nodemon/lib/config/defaults");
 
 const router = express.Router();
 const refreshTokens = [];
@@ -113,12 +112,12 @@ router.post("/register", async (req, res) => {
 });
 
 /**
- * Refresh Token Route
- * creates a new access token
- * required : refresh_token
+ * returns new accessToken
+ * required : refresh_token & email
  */
 router.post("/token", (req, res) => {
     const refreshToken = req.body.refresh_token;
+    const email = req.body.email;
 
     //if the token is empty
     if(refreshToken == null){
@@ -126,29 +125,32 @@ router.post("/token", (req, res) => {
     }
 
     //if the token is expired
-    if(!refreshTokens.includes(refreshToken)){
-        return res.status(403).json({message: "UnAuthorized!"});
+    const user = User.findOne({email: email});
+    if(user == null){
+        return res.json({message: "User does not exist!"});
     }
 
-    //the token is valid
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        //failed to verify the token
-        if(err){
-            return res.status(403).json({message: "UnAuthorized"});
-        }
+    //verify the refreshToken
+    if(refreshToken === user.refreshToken){
+        //the token is valid
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+            //failed to verify the token
+            if(err){
+                return res.status(403).json({message: "UnAuthorized"});
+            }
 
-        //refresh token verified
-        const accessToken = generateAccessToken({email: user.email});
+            //refresh token verified
+            const accessToken = generateAccessToken({email: user.email});
 
-        res.status(200).json({accessToken: accessToken})
-    });
-
+            res.status(200).json({accessToken: accessToken})
+        });
+    }
 });
 
 /**
  * revoke access
  *
- * Delete the refresh token
+ * Delete the access token
  * required : email
  */
 router.post("/logout", async (req, res) => {
@@ -158,7 +160,7 @@ router.post("/logout", async (req, res) => {
     //find the user
     const user = await User.findOneAndUpdate(
         {email: email}, //find by email
-        {refreshToken: ""}, //update fields
+        {accessToken: ""}, //update fields
         {new: true} //return updated object
     );
 

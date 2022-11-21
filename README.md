@@ -25,7 +25,8 @@ the rest of the APIs.
 
 # JWT Authentication
 `/auth/login` -> returns accessToken to be used  
-`/auth/token` -> accepts refreshToken and returns a new accessToken  
+`/auth/register` -> registers and returns tokens  
+`/auth/token` -> accepts refreshToken|email and returns a new accessToken  
 `/auth/logout` -> deletes the refreshToken
 
 One of the goal is to turn it into a npm package  
