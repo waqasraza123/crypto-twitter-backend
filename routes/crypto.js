@@ -10,7 +10,7 @@ const APIKEY = process.env.COINMARKETCAP_API;
  * returns all cryptocurrency list
  * required : API_KEY
  */
-router.get('/all', authMiddleware, (req, res) => {
+router.get('/all', (req, res) => {
 
     let response = null;
 
