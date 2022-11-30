@@ -1,15 +1,16 @@
 require("dotenv").config()
 require("./config/database")
-require("./models/user")
 
 const express = require('express')
 const app = express() //run express server
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
 
+const authRouter = require('./routes/auth')
 const usersRouter = require('./routes/users')
 const cryptoRouter = require('./routes/crypto')
-const authRouter = require('./routes/auth')
+const postsRouter = require('./routes/posts')
+const tweetRouter = require('./routes/tweets')
 
 const port = 8000
 
@@ -26,10 +27,14 @@ app.use(
 //accepts json on our server
 app.use(express.json());
 
-//routes
+/**
+ * routers
+ */
+app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/crypto", cryptoRouter);
-app.use("/auth", authRouter);
+app.use("/posts", postsRouter);
+app.use("/tweets", tweetRouter);
 
 /**
  * start the server

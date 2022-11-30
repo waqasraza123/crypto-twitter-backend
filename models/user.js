@@ -14,7 +14,7 @@ const users = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minLength: 6
+        minLength: 6,
     },
     createdAt: {
         type: Date,
@@ -33,6 +33,15 @@ const users = mongoose.Schema({
         required: true
     }
 });
+
+//exclude the password field
+users.set('toJSON', {
+    transform: function(doc, ret, opt) {
+        delete ret['password']
+        return ret
+    }
+})
+
 
 /**
  *

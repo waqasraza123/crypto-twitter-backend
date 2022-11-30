@@ -7,7 +7,6 @@ const bcrypt = require("bcrypt")
 const User = require("../models/user");
 
 const router = express.Router();
-const refreshTokens = [];
 const tokenExpiryTime = process.env.TOKEN_EXPIRY_TIME;
 
 /**
@@ -115,17 +114,17 @@ router.post("/register", async (req, res) => {
  * returns new accessToken
  * required : refresh_token & email
  */
-router.post("/token", (req, res) => {
+router.post("/token", async (req, res) => {
     const refreshToken = req.body.refresh_token;
     const email = req.body.email;
 
     //if the token is empty
     if(refreshToken == null){
-        return res.status(401).json({message: "UnAuthorized!"});
+        return res.status(401).json({message: "Token is empty!"});
     }
 
     //if the token is expired
-    const user = User.findOne({email: email});
+    const user = await User.findOne({email: email});
     if(user == null){
         return res.json({message: "User does not exist!"});
     }
@@ -141,9 +140,12 @@ router.post("/token", (req, res) => {
 
             //refresh token verified
             const accessToken = generateAccessToken({email: user.email});
-
+            console.log(accessToken);
             res.status(200).json({accessToken: accessToken})
         });
+    }
+    else{
+        return res.sendStatus(500);
     }
 });
 
