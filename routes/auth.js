@@ -14,6 +14,7 @@ const tokenExpiryTime = process.env.TOKEN_EXPIRY_TIME;
  * Required : email, password
  */
 router.post("/login", async (req, res) => {
+
     const email = req.body.email;
     const password = req.body.password;
 
@@ -73,7 +74,7 @@ router.post("/register", async (req, res) => {
 
     //return if the fields are empty
     if(!email || !password){
-        return res.status(400).json({message: "Email or Password is not correct!"});
+        return res.status(400).json({message: "Email or Password is empty!"});
     }
 
     //check if the user already exists
