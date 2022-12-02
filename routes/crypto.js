@@ -49,5 +49,25 @@ router.get('/all', (req, res) => {
     );
 });
 
+router.get("/meta", async (req, res) => {
+    const currencyId = req.query.currencyId
+
+    try{
+        const response = await axios.get(apiBaseURL + "/v2/cryptocurrency/info?id=" + currencyId, {
+            headers: {
+                'X-CMC_PRO_API_KEY': APIKEY,
+            }
+        })
+        if(response){
+            console.log(response.data)
+            res.status(200).json(response.data)
+        }
+    }catch (error){
+        console.log(error)
+        res.send(500)
+    }
+
+})
+
 
 module.exports = router;
