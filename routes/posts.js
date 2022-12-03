@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
         const post = await Post.create({
             title: req.body.title,
             content: req.body.content,
-            userId: req.body.userId
+            author: req.body.userId
         })
 
         //post saved
@@ -34,14 +34,15 @@ router.post("/", async (req, res) => {
 
 /**
  * returns all posts
- * required: userId
- * /posts/?userId=1
  */
 router.get("/", async (req, res) => {
 
     try {
-        const userId = req.query.userId
-        const posts = await Post.find({userId: userId}).sort({updatedAt: "desc"}).exec()
+        const posts = await Post.find()
+            .populate("author", "name email _id")
+            .sort({updatedAt: "desc"})
+            .exec()
+
         res.status(200).json(posts)
     }catch (error){
         res.status(500).json({message: "Failed to retrieve posts."})

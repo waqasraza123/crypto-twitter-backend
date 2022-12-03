@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const {Schema} = require("mongoose");
 
 //create user schema
 const users = mongoose.Schema({
@@ -31,7 +32,19 @@ const users = mongoose.Schema({
     refreshToken: {
         type: String,
         required: true
-    }
+    },
+    tweets: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Tweet"
+        }
+    ],
+    posts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Post"
+        }
+    ]
 });
 
 //exclude the password field

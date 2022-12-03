@@ -7,14 +7,15 @@ const authMiddleware = require("../middlewares/jwtAuthentication")
 //all the routes are prefixed by /posts
 
 /**
- * create a post
+ * create a tweet
  * required: content, userId
  */
 router.post("/", async (req, res) => {
+
     try{
         const tweet = await Tweet.create({
             content: req.body.content,
-            userId: req.body.userId
+            author: req.body.userId
         })
 
         //post saved
@@ -37,8 +38,9 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
 
     try {
-        const userId = req.query.userId
-        const tweets = await Tweet.find().sort({updatedAt: "desc"}).exec()
+        const tweets = await Tweet.find()
+            .populate("author", "_id name email")
+            .sort({updatedAt: "desc"}).exec()
         res.status(200).json(tweets)
     }catch (error){
         res.status(500).json({message: "Failed to retrieve tweets."})

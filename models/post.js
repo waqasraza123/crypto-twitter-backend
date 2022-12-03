@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const {Schema} = require("mongoose");
 
 //create user schema
 const posts = mongoose.Schema({
@@ -10,10 +11,9 @@ const posts = mongoose.Schema({
         type: String,
         required: true,
     },
-    userId: {
-        type: Number,
-        required: true,
-        default: 1
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     },
     createdAt: {
         type: Date,

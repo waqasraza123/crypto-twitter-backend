@@ -36,7 +36,7 @@ router.get("/user", authMiddleware, async function (req, res){
     const email = req.body.email;
 
     try{
-        const user = await User.find({email: email});
+        const user = await User.find({email: email}).populate("posts").populate("tweets");
         if(user){
             res.status(200).json(user);
         }

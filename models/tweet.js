@@ -1,16 +1,14 @@
 const mongoose = require("mongoose")
+const {Schema} = require("mongoose");
 
-//create tweets schema
-//very basic for now
 const tweets = mongoose.Schema({
     content: {
         type: String,
         required: true,
     },
-    userId: {
-        type: Number,
-        required: true,
-        default: 1
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     },
     createdAt: {
         type: Date,
