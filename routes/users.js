@@ -1,8 +1,9 @@
-const express = require("express");
-const router = express.Router();
-
-const User = require("../models/user");
+const express = require("express")
+const router = express.Router()
+const User = require("../models/user")
+const upload = require("../config/multer")
 const authMiddleware = require("../middlewares/jwtAuthentication")
+
 
 //all the routes are prefixed by /users
 
@@ -10,7 +11,7 @@ const authMiddleware = require("../middlewares/jwtAuthentication")
  * returns all users
  * required : nothing
  */
-router.get("/", authMiddleware, async function (req, res){
+router.get("/",  async function (req, res){
     try {
         //wait for the results
         const users = await User.find();
@@ -32,7 +33,7 @@ router.get("/", authMiddleware, async function (req, res){
  * returns one user
  * required : email
  */
-router.get("/user", authMiddleware, async function (req, res){
+router.get("/user",  async function (req, res){
     const email = req.body.email;
 
     try{
@@ -50,15 +51,28 @@ router.get("/user", authMiddleware, async function (req, res){
  * updates a user
  * required : email and/or other data to update
  */
-router.patch("/user", authMiddleware, async function (req, res){
+
+router.post("/user",  upload.single("photo"), async function (req, res){
+
+    const email = req.body.email;
+    const filter = {email: email};
+    let newData = req.body;
+    const photo = req.file
+
+    //add the filename to data
+    //filename is coming from multer filename => returns random filename with extension
+    //newData.photo = photo.filename
+    if(photo){
+        //photo was uploaded
+        //else no need to append the photo
+        newData.photo = photo.filename
+    }
 
     try{
-        const email = req.body.email;
-        const filter = {email: email};
-        const newData = req.body;
-
         //new: true sends back the new data after update
         let user = await User.findOneAndUpdate(filter, newData, {new: true});
+
+        console.log(user)
 
         if(user == null){
             res.status(404).json({message: "User not found!"});
@@ -78,7 +92,7 @@ router.patch("/user", authMiddleware, async function (req, res){
  * deletes a user
  * required : email
  */
-router.delete("/user", authMiddleware, async function (req, res){
+router.delete("/user",  async function (req, res){
 
     try{
         const email = req.body.email;

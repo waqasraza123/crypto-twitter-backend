@@ -27,6 +27,10 @@ app.use(
 //accepts json on our server
 app.use(express.json());
 
+//serve files/images/static
+//otherwise files won't load in browser
+app.use('/uploads', express.static('uploads'));
+
 /**
  * routers
  */

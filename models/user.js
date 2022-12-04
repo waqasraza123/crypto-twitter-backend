@@ -12,6 +12,21 @@ const users = mongoose.Schema({
         required: true,
         lowercase: true
     },
+    username: {
+        type: String,
+        required: true,
+        lowercase: true,
+        maxLength: 20
+    },
+    bio: {
+        type: String,
+        required: false,
+        maxLength: 200
+    },
+    photo: {
+        type: String,
+        required: false
+    },
     password: {
         type: String,
         required: true,
