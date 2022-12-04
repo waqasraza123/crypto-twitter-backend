@@ -6,7 +6,8 @@ mongodb
 mongoose  
 axios  
 jsonwebtoken  
-bcrypt
+bcrypt  
+multer
 
 # Mongoose
 is being used to interact with mongodb server
